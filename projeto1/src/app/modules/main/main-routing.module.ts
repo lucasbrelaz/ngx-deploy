@@ -11,6 +11,8 @@ const routes: Routes = [
     component: HomeComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '.', redirectTo: 'dashboard' },
       { path: 'rh', component: RhComponent },
       { path: 'dashboard', component: DashboardComponent }
     ]

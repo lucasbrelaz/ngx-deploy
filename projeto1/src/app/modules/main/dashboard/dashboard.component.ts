@@ -1,26 +1,48 @@
-import { Component, OnInit } from '@angular/core';
-import { UserModel } from './user.model';
+import { UserService } from './../../../core/services/user.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { UserModel } from '../../../core/models/user.model';
+import { ResponseModel } from 'src/app/core/models/response.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   public users: UserModel[];
-  constructor() { }
+  public loading: boolean;
+  subscription: any;
+
+  constructor(
+    private service: UserService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
-    this.users = [
-      {
-        id: 7,
-        email: 'michael.lawson@reqres.in',
-        first_name: 'Michael',
-        last_name: 'Lawson',
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/follettkyle/128.jpg'
+    this.users = [];
+    this.getUsers();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  private getUsers() {
+    this.loading = true;
+    this.subscription = this.service.getAll().subscribe(
+      (response: ResponseModel) => {
+        this.users = response.data;
+        this.loading = false;
+      },
+      (error) => {
+        this.toastr.error('Lista indisponível');
+        this.loading = false;
       }
-    ];
+    );
   }
 
 }

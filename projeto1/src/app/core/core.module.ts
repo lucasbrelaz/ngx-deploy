@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TopbarComponent } from './layout/topbar/topbar.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -13,7 +14,8 @@ import { FooterComponent } from './layout/footer/footer.component';
     FooterComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   exports: [
     TopbarComponent,
